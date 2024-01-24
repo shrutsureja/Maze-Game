@@ -1,15 +1,11 @@
 import './App.css'
+import NewMaze from './components/NewMaze'
 
 function App() {
 
   return (
     <>
-    <main>
-      <div className="maze">
-        <canvas></canvas>
-      </div>
-      <button>Create new maze</button>
-    </main>
+      <NewMaze/>
     </>
   )
 }
