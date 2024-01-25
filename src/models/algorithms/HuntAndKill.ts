@@ -27,17 +27,24 @@ export class HuntAndKill{
     }
     this.randomColNumbers = Utils.shuffleArray<number>(this.randomColNumbers);
     this.randomRowNumbers = Utils.shuffleArray<number>(this.randomRowNumbers);
+    console.log("randomColNumbers : " + this.randomColNumbers);
+    console.log("randomRowNumbers : " + this.randomRowNumbers);
     this.huntAndKill();
   }
 
+  public totalRemainingCells : number = this.nCols * this.nRows;
+
   private kill(currentCell : Cell): void{
+    // let totalRemainingCells : number = this.nCols * this.nRows;
     while (currentCell){
       const next = currentCell.neighbors.find(neighbourCell => !neighbourCell.visited);
       if(next){
-        currentCell.visited=true;
-        next.visited=true;
         currentCell.connectTo(next);
         currentCell = next;
+        console.log(next);
+        if(next===null) break;       
+        this.totalRemainingCells = this.totalRemainingCells - 1;
+        console.log("totalRemainingCells -> " +this.totalRemainingCells);
       }else{
         break;
       }
@@ -58,8 +65,13 @@ export class HuntAndKill{
     return new Cell();
   }
 
+  private remainingCells(n){
+    return n - 1
+  }
+  
   private huntAndKill() {
-    let currentCell = this.cells[~~(Math.random()*this.nRows)][~~(Math.random()*this.nCols)];
+    // let currentCell = this.cells[~~(Math.random()*this.nRows)][~~(Math.random()*this.nCols)];
+    let currentCell = this.cells[0][0];
     while(currentCell){
       this.kill(currentCell);
       currentCell = this.hunt();
