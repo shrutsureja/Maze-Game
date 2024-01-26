@@ -21,11 +21,10 @@ export class Cell{
   }
 
   connectTo(anotherCell : Cell){
-    console.log(`connecting.. [${this.row},${this.col}] => [${anotherCell.row},${anotherCell.col}]`);
     
     if(!anotherCell) return;
     if(this.row === anotherCell.row){
-      console.log("row");
+      // console.log("row");
       
       if(this.col - 1 === anotherCell.col){
         this.westEdge = false;
@@ -38,7 +37,7 @@ export class Cell{
       else return;
     }
     else if(this.col === anotherCell.col){
-      console.log("col");
+      // console.log("col");
       
       if(this.row - 1 === anotherCell.row){
         this.northEdge = false;
@@ -51,12 +50,12 @@ export class Cell{
       else return;
     }
     else{ 
-      console.log("just returning from the connectTo function");  
+      // console.log("just returning from the connectTo function");  
       return;
     }
     this.visited = true;
     anotherCell.visited = true;
-    console.log(`connection is DONE [${this.row},${this.col}] => [${anotherCell.row},${anotherCell.col}]`);
+    // console.log(`connection is DONE [${this.row},${this.col}] => [${anotherCell.row},${anotherCell.col}]`);
   }
 
 }

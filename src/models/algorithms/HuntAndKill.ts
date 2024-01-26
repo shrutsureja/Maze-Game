@@ -34,47 +34,98 @@ export class HuntAndKill{
 
   public totalRemainingCells : number = this.nCols * this.nRows;
 
-  private kill(currentCell : Cell): void{
-    // let totalRemainingCells : number = this.nCols * this.nRows;
-    while (currentCell){
-      const next = currentCell.neighbors.find(neighbourCell => !neighbourCell.visited);
-      if(next){
-        currentCell.connectTo(next);
-        currentCell = next;
-        console.log(next);
-        if(next===null) break;       
-        this.totalRemainingCells = this.totalRemainingCells - 1;
-        console.log("totalRemainingCells -> " +this.totalRemainingCells);
-      }else{
-        break;
+  // private kill(currentCell : Cell): void{
+  //   // let totalRemainingCells : number = this.nCols * this.nRows;
+  //   while (currentCell){
+  //     const next = currentCell.neighbors.find(neighbourCell => !neighbourCell.visited);
+  //     if(next){
+  //       currentCell.connectTo(next);
+  //       currentCell = next;
+  //       console.log(next);
+  //       if(next===null) break;       
+  //       this.totalRemainingCells = this.totalRemainingCells - 1;
+  //       console.log("totalRemainingCells -> " +this.totalRemainingCells);
+  //     }else{
+  //       break;
+  //     }
+  //   }
+  // }
+
+  private kill(current: Cell) {
+    while (current) {
+      const next = current.neighbors.find(c => !c.visited);
+      if (next) {
+        console.log(`connecting... [${current.row},${current.col}] => [${next.row},${next.col}]`);
+        current.connectTo(next);
+        console.log(`connection is DONE [${current.row},${current.col}] => [${next.row},${next.col}]`);
       }
+      if (next === undefined){
+        console.log("next is undefined");  
+        return;
+      }
+      current = next;
     }
   }
+  
 
-  private hunt() : Cell {
-    for(const r of this.randomRowNumbers){
-      for(const c of this.randomColNumbers){
+  private hunt(): Cell | undefined {
+    // console.log("Hunting...");
+    for (const r of this.randomRowNumbers) {
+      for (const c of this.randomColNumbers) {
         const newCell = this.cells[r][c];
-        if(newCell.visited) continue;
+        if (newCell.visited) continue;
         const next = newCell.neighbors.find(c => c.visited);
-        if(next){
-          return newCell
+        if (next) {
+          newCell.connectTo(next);
+          return newCell;
+        } else {
+          console.log("Hunting is DONE");
         }
       }
     }
-    return new Cell();
+    return undefined;
   }
 
-  private remainingCells(n){
-    return n - 1
-  }
+  // private kill(current: Cell) {
+  //   while (current) {
+  //     const next = current.neighbors.find(c => !c.visited);
+  //     if (next) {
+  //       current.connectTo(next);
+  //     }
+  //     current = next;
+  //   }
+  // }
+  // private hunt(): Cell {
+  //   for (const huntRow of this.randomRowNumbers) {
+  //     for (const huntColumn of this.randomColNumbers) {
+  //       const cell = this.cells[huntRow][huntColumn];
+  //       if (cell.visited) {
+  //         continue;
+  //       }
+  //       const next = cell.neighbors.find(c => c.visited);
+  //       if (next) {
+  //         cell.connectTo(next);
+  //         return cell;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // private remainingCells(n){
+  //   return n - 1
+  // }
   
   private huntAndKill() {
-    // let currentCell = this.cells[~~(Math.random()*this.nRows)][~~(Math.random()*this.nCols)];
-    let currentCell = this.cells[0][0];
+    let currentCell = this.cells[~~(Math.random()*this.nRows)][~~(Math.random()*this.nCols)];
+    // let currentCell = this.cells[0][0];
     while(currentCell){
       this.kill(currentCell);
-      currentCell = this.hunt();
+      const temp = this.hunt();
+      if(temp === undefined) {
+        console.log("temp is undefined");
+        return;
+      }
+      currentCell = temp;
     }
   }
 
