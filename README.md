@@ -27,3 +27,15 @@ Happy for more contributors to join.
   ```shell
   npm run dev
   ```
+
+# Tasks to Do
+
+- rendering issues with the react -> to solve this learn more about react and canvas 
+- need to set some limitaions for the values
+- animation of the algorithm generation -> need to find a new way
+- speed of the animation 
+- solution for solving the maze
+- play the maze game with arrow key/ buttons
+- multiplayer game
+- easy medium hard levels
+- impleament some other algorithms (ask for contributions if possible).

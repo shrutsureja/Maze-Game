@@ -12,10 +12,10 @@ function NewMaze(){
   // const myPathColor : String= '#4080FF';
   // const myPathThickness : Number= 10;
   // const solutionPathThickness : Number = 3;
-  const [dimensions, setDimensions] = useState({
-    row : 10,
-    col : 30
-  });
+  
+  const [dimensions, setDimensions] = useState({row: 10, col: 10});
+
+  
   useEffect(() => {
     if (canvasRef.current) {
       ctxRef.current = canvasRef.current.getContext('2d');
@@ -25,6 +25,14 @@ function NewMaze(){
     console.log("Here in the useEffect");
     
   },[canvasRef]);
+
+  useEffect(()=>{
+    console.log("Here in the useEffect");
+    console.log(dimensions);
+    handleClick();
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[dimensions]);
 
   // method to draw each cell 
   function renderBorders(cell: Cell): void {
@@ -74,6 +82,16 @@ function NewMaze(){
     // });
     console.log(dimensions);
     
+    if(dimensions.row < 1 || dimensions.col < 1){
+      alert("Please enter a valid row and column");
+      return;
+    }
+
+    if(dimensions.row > 100 || dimensions.col > 100){
+      alert("Please enter a row and column less than 100");
+      return;
+    }
+
     const maze : HuntAndKill = new HuntAndKill(dimensions.row,dimensions.col);
     console.log("maze has been generated");
     
@@ -108,10 +126,12 @@ function NewMaze(){
       <input type="number" id="col" placeholder="col" />
       <button onClick={()=>{
         setDimensions({
-          row: parseInt((document.getElementById('row') as HTMLInputElement)?.value || '1'),
-          col: parseInt((document.getElementById('col') as HTMLInputElement)?.value || '1')
+          // row: parseInt((document.getElementById('row') as HTMLInputElement)?.value || '1'),
+          // col: parseInt((document.getElementById('col') as HTMLInputElement)?.value || '1')
+          row: parseInt((document.getElementById('row').value)),
+          col: parseInt((document.getElementById('col').value))
         });
-        handleClick();
+        // handleClick();
       }}>Generate new Maze</button>
     </>
   )
