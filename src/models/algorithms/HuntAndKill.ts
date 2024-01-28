@@ -9,6 +9,7 @@ export class HuntAndKill{
 
   constructor(public nRows: number, public nCols: number){
     // we have initialized the 2d grid
+    if(nRows < 1 || nCols < 1) throw new Error("Invalid number of rows or columns");
     for(let i = 0; i < nRows; i++){
       this.cells[i] = [];
       for(let j = 0; j < nCols; j++){
@@ -55,9 +56,9 @@ export class HuntAndKill{
     while (current) {
       const next = current.neighbors.find(c => !c.visited);
       if (next) {
-        console.log(`connecting... [${current.row},${current.col}] => [${next.row},${next.col}]`);
+        // console.log(`connecting... [${current.row},${current.col}] => [${next.row},${next.col}]`);
         current.connectTo(next);
-        console.log(`connection is DONE [${current.row},${current.col}] => [${next.row},${next.col}]`);
+        // console.log(`connection is DONE [${current.row},${current.col}] => [${next.row},${next.col}]`);
       }
       if (next === undefined){
         console.log("next is undefined");  
