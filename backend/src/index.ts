@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { GenerateMaze } from "./Maze/GenerateMaze";
+import z from "zod";
 
 // const express =  require('express');
 
@@ -7,27 +8,26 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+const inputValidation = z.object({
+  rows : z.number().min(1).max(100),
+  columns : z.number().min(1).max(100),
+  animation : z.boolean(),
+  algorithmName : z.string().toLowerCase().trim()
+})
 //middleware
 function MazeInputValidation(req : Request, res  :Response, next : NextFunction) {
   if(!req.body) {
     res.status(400);
-    res.send({msg: 'Please enter all the fields'} as object);
+    res.json({msg: 'Please enter all the fields'});
   }
-  const {algorithmName, rows, columns, animation} = req.body;
-  if(!algorithmName || !rows || !columns || !animation) {
-    return res.status(400).json({msg: 'Please enter all the fields'} as object);
+  const validate = inputValidation.safeParse(req.body);
+  if (!validate.success){
+    res.status(400).json(validate.error);
   }
-  if(algorithmName.toLowerCase().split(' ').join() !== 'huntandkill' || algorithmName.toLowerCase().split(' ').join() !== 'recursivebacktracker') {
-    return res.status(400).json({msg: 'Please enter a valid algorithm name'} as object);
-  }
-  if(typeof rows !== 'number' || typeof columns !== 'number') {
-    return res.status(400).json({msg: 'Please enter a valid number for rows and columns'} as object);
-  }
-  if(rows < 1 || columns < 1 || rows > 100 || columns > 100) {
-    return res.status(400).json({msg: 'Please enter a valid number for rows and columns'} as object);
-  }
-  if(typeof animation !== 'boolean') {
-    return res.status(400).json({msg: 'Please enter a valid boolean for animation'} as object);
+  const { algorithmName } = req.body;
+  if( algorithmName.toLowerCase().split(' ').join('') !== "huntandkill" && algorithmName.toLowerCase().split(' ').join('') !== "recursivebacktracking"){
+    res.status(400).json({success : false , msg : "Algorithm does not match." + algorithmName.toLowerCase().split(' ').join('')})
   }
   next();
 }
@@ -46,10 +46,18 @@ function MazeInputValidation(req : Request, res  :Response, next : NextFunction)
  */
 app.get('/generate', MazeInputValidation, (req : Request, res : Response)=> {
   const {algorithmName, rows, columns, animation} = req.body;
-  const MazeObj = new GenerateMaze(rows, columns);
-  const MazeGrid = MazeObj.generateNewMaze(algorithmName, animation);
-  // do the conversion of the maze, maze solution and the animation path to json over here 
-  res.status(200).json({msg: 'Hello World'});
+  try{
+    const MazeObj = new GenerateMaze(rows, columns);
+    const MazeGrid = MazeObj.generateNewMaze(algorithmName.toLowerCase().split(' ').join(''), animation);
+    // do the conversion of the maze, maze solution and the animation path to json over here 
+    res.status(200).json({success : true, data : MazeGrid});
+  }
+  catch(e){
+    res.status(500).json(`error -> ${e}`);
+  }
+  finally{
+    console.log("Reached finally");
+  }
 })
 
 app.listen(PORT, ()=> {

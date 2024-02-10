@@ -58,35 +58,14 @@ class GenerateMaze {
     else if(algorithmName === 'recursivebacktracking'){
       // alog
     }
-
-    
-    // at this return it only need to return the data like this 
-    /**
-     * {
-     *  cells : [ [{x}, {x}, {x}, {x}, {x} ... columns - 1],
-     *            [{x}, {x}, {x}, {x}, {x} ... columns - 1],
-     *            .
-     *            .
-     *            .
-     *            rows - 1
-     *          ]
-     * }
-     * 
-     * each x consists of 
-     * {
-     *  row: number;
-     *  col: number;
-     *  northEdge : false;
-     *  eastEdge : false;
-     *  southEdge : false;
-     *  westEdge : false;
-     * }
-     */
     const jsonMaze = this.convertMazeToJSON(maze);
     // combine all in one Maze, Animation, Solution
     const response : any = {
       maze : jsonMaze,
-      animation : animation ? animationPath : false
+      animationStatus : animation,
+    }
+    if(animation){
+      response.animationPath = animationPath;
     }
     return response;
   }
