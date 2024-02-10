@@ -9,3 +9,8 @@ export class Utils{
     return arr;
   }
 }
+
+export interface Path{
+  row : number,
+  col : number
+}

@@ -1,8 +1,8 @@
 class Cell {
-  northEdge:boolean = false;
-  eastEdge:boolean = false;
-  southEdge:boolean = false;
-  westEdge:boolean = false;
+  northEdge:boolean = true;
+  eastEdge:boolean = true;
+  southEdge:boolean = true;
+  westEdge:boolean = true;
   
   visited: boolean = false;
   

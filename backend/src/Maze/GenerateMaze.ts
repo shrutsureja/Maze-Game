@@ -1,6 +1,6 @@
 import { HuntAndKill } from "./Algorithms/HuntAndKill";
 import { Cell } from "./Cell";
-import { Utils } from "./Utils";
+import { Utils, Path } from "./Utils";
 
 class GenerateMaze {
   private cells: Cell[][] = [];
@@ -25,14 +25,41 @@ class GenerateMaze {
     });
   }
 
+  private convertMazeToJSON(maze : Cell[][]){
+    const response = maze.map(row => {
+      return row.map(cell => {
+        return {
+          row : cell.row,
+          col : cell.col,
+          northEdge : cell.northEdge,
+          eastEdge : cell.eastEdge,
+          southEdge : cell.southEdge,
+          westEdge : cell.westEdge,
+        }
+      })
+    })
+    return response;
+  }
+
+  private convertPathToJSON(path : Cell[]){
+    return path;
+  } 
+
   generateNewMaze(algorithmName : string, animation: boolean) : Cell[][]{
+    let maze : Cell[][] = [];
+    let animationPath : Path[] = [];
     if(algorithmName === 'huntandkill'){
       const huntAndKillObj = new HuntAndKill(this.rows, this.columns, animation, this.cells);
-      const maze = huntAndKillObj.getGeneratedMaze();
+      maze = huntAndKillObj.getGeneratedMaze();
+      if(animation){
+        animationPath = huntAndKillObj.getAnimationPath();
+      }
     }
     else if(algorithmName === 'recursivebacktracking'){
       // alog
     }
+
+    
     // at this return it only need to return the data like this 
     /**
      * {
@@ -55,15 +82,17 @@ class GenerateMaze {
      *  westEdge : false;
      * }
      */
-    return this.cells;
-  }
-
-  getAnimationPath(){
-    
+    const jsonMaze = this.convertMazeToJSON(maze);
+    // combine all in one Maze, Animation, Solution
+    const response : any = {
+      maze : jsonMaze,
+      animation : animation ? animationPath : false
+    }
+    return response;
   }
 
   getSolutionPath(){
-
+    return this.mazeSolution;
   }
 
   private mapNeighbors(cell : Cell):void{
