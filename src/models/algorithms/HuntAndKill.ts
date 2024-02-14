@@ -33,7 +33,14 @@ export class HuntAndKill{
     this.huntAndKill();
   }
 
-  public totalRemainingCells : number = this.nCols * this.nRows;
+  public firstCell(c : Cell) : void{
+    c.northEdge = false;
+  }
+  public lastCell(c : Cell) : void{
+    c.eastEdge = false;
+  }
+
+  // public totalRemainingCells : number = this.nCols * this.nRows;
 
   // private kill(currentCell : Cell): void{
   //   // let totalRemainingCells : number = this.nCols * this.nRows;

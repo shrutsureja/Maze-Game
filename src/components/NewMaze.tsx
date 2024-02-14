@@ -3,8 +3,8 @@ import { Cell } from "../models/Cell";
 import { HuntAndKill } from "../models/algorithms/HuntAndKill";
 
 function NewMaze(){
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const ctxRef = useRef<CanvasRenderingContext2D>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const cellSize: number = 20; // length of cell edge
   const cellEdgeThickness: number = 2; // thickness of cell edge
   // const cellBackground : string= '#FFFFFF';
@@ -36,25 +36,34 @@ function NewMaze(){
 
   // method to draw each cell 
   function renderBorders(cell: Cell): void {
-    ctxRef.current.strokeStyle = '#000';
-    ctxRef.current.lineWidth = cellEdgeThickness;
+    if (ctxRef.current) {
+      ctxRef.current.strokeStyle = '#000';
+    }
+    if (ctxRef.current) {
+      ctxRef.current.lineWidth = cellEdgeThickness;
+    }
     if (ctxRef.current) {
       if (cell.northEdge) {
+        if(cell.row === 0) ctxRef.current.lineWidth = 4;
         ctxRef.current.beginPath();
         ctxRef.current.moveTo(cell.col * cellSize, cell.row * cellSize);
         ctxRef.current.lineTo((cell.col + 1) * cellSize, cell.row * cellSize);
         ctxRef.current.stroke();
+        ctxRef.current.lineWidth = cellEdgeThickness;
       }
       if (cell.eastEdge) {
+        if(cell.col === dimensions.col - 1) ctxRef.current.lineWidth = 4;
         ctxRef.current.beginPath();
         ctxRef.current.moveTo((cell.col + 1) * cellSize, cell.row * cellSize);
         ctxRef.current.lineTo(
           (cell.col + 1) * cellSize,
           (cell.row + 1) * cellSize
-        );
-        ctxRef.current.stroke();
+          );
+          ctxRef.current.stroke();
+        ctxRef.current.lineWidth = cellEdgeThickness;
       }
       if (cell.southEdge) {
+        if(cell.row === dimensions.row - 1) ctxRef.current.lineWidth = 4;
         ctxRef.current.beginPath();
         ctxRef.current.moveTo(
           (cell.col + 1) * cellSize,
@@ -62,12 +71,15 @@ function NewMaze(){
         );
         ctxRef.current.lineTo(cell.col * cellSize, (cell.row + 1) * cellSize);
         ctxRef.current.stroke();
+        ctxRef.current.lineWidth = cellEdgeThickness;
       }
       if (cell.westEdge) {
+        if(cell.col === 0) ctxRef.current.lineWidth = 4;
         ctxRef.current.beginPath();
         ctxRef.current.moveTo(cell.col * cellSize, (cell.row + 1) * cellSize);
         ctxRef.current.lineTo(cell.col * cellSize, cell.row * cellSize);
         ctxRef.current.stroke();
+        ctxRef.current.lineWidth = cellEdgeThickness;
       }
     }
 
@@ -108,9 +120,15 @@ function NewMaze(){
     if (ctxRef.current) {
       ctxRef.current.clearRect(0, 0, dimensions.row * cellSize, dimensions.col * cellSize);
       maze.cells.forEach(x => x.forEach(c => {
-        ctxRef.current.fillStyle = '#ccc';
-        ctxRef.current.fillRect(c.col*cellSize,c.row*cellSize, cellSize, cellSize);
+        if (ctxRef.current) {
+          ctxRef.current.fillStyle = '#ccc';
+        }
+        if (ctxRef.current) {
+          ctxRef.current.fillRect(c.col * cellSize, c.row * cellSize, cellSize, cellSize);
+        }
       }));
+      maze.firstCell(maze.cells[0][0]);
+      maze.lastCell(maze.cells[dimensions.row - 1][dimensions.col - 1]);
       maze.cells.forEach(x => x.forEach(c => renderBorders(c)));
     }
     else console.log("ctxRef is possible null");
@@ -122,14 +140,15 @@ function NewMaze(){
   return(
     <>
       <canvas ref={canvasRef} height={500} width={500} id="Maze"/>
+      <br />
       <input type="number" id="row" placeholder="row" />
       <input type="number" id="col" placeholder="col" />
       <button onClick={()=>{
         setDimensions({
           // row: parseInt((document.getElementById('row') as HTMLInputElement)?.value || '1'),
           // col: parseInt((document.getElementById('col') as HTMLInputElement)?.value || '1')
-          row: parseInt((document.getElementById('row').value)),
-          col: parseInt((document.getElementById('col').value))
+          row: parseInt((document.getElementById('row') as HTMLInputElement)?.value || '1'),
+          col: parseInt((document.getElementById('col') as HTMLInputElement)?.value || '1')
         });
         // handleClick();
       }}>Generate new Maze</button>
