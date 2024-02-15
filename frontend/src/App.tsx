@@ -1,5 +1,5 @@
 import './App.css'
-import NewMaze from './components/NewMaze'
+import MazeGame from './Maze/MazeGame'
 import UnderDevelopment from './components/UnderDevelopment'
 
 
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <UnderDevelopment/>
-      <NewMaze/>
+      <MazeGame/>
     </>
   )
 }
