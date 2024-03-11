@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import { GenerateMaze } from "./Maze/GenerateMaze";
 import z from "zod";
-
+import cors from 'cors'
 // const express =  require('express');
 
 const app = express();
 const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 const inputValidation = z.object({
@@ -26,6 +27,7 @@ function MazeInputValidation(req : Request, res  :Response, next : NextFunction)
     res.status(400).json(validate.error);
   }
   const { algorithmName } = req.body;
+  console.log(algorithmName);
   if( algorithmName.toLowerCase().split(' ').join('') !== "huntandkill" && algorithmName.toLowerCase().split(' ').join('') !== "recursivebacktracking"){
     res.status(400).json({success : false , msg : "Algorithm does not match." + algorithmName.toLowerCase().split(' ').join('')})
   }
@@ -44,7 +46,7 @@ function MazeInputValidation(req : Request, res  :Response, next : NextFunction)
  *  generatedMazePath: {array of {row: number, column: number}}
  * }
  */
-app.get('/generate', MazeInputValidation, (req : Request, res : Response)=> {
+app.post('/generate', MazeInputValidation, (req : Request, res : Response)=> {
   const {algorithmName, rows, columns, animation} = req.body;
   try{
     const MazeObj = new GenerateMaze(rows, columns);
