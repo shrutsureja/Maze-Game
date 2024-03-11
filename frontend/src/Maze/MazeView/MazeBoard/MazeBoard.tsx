@@ -19,54 +19,60 @@ export default function MazeBoard (props : any) {
     if(mazeData){
       canvasRef.current.height = mazeData.length * 20;
       canvasRef.current.width = mazeData[0].length * 20;
-    }
-    context.current = canvasRef.current.getContext('2d');
-    
-    if(context.current){
-      const ctx = context.current;
+      context.current = canvasRef.current.getContext('2d');
       
-      maze.current = new MazeGameEngine(
-        mazeData,
-        ctx,
-        setStatus
-      );
-
-      window.onkeydown = (e) => {
-        switch (e.key) {
-          case "w":
-          case "ArrowUp":
-            // only execute if the status is Playing
-            console.log("ArrowUp");
-             
-            break;
-          case "s":
-          case "ArrowDown":
-            // only execute if the status is Playing
-            console.log("ArrowDown"); 
-            break;
-          case "d":
-          case "ArrowRight":
-            console.log("ArrowRight");
-            // only execute if the status is Playing
-            break;
-          case "a":
-          case "ArrowLeft":
-            console.log("ArrowLeft");
-            // only execute if the status is Playing
-            break;
-          case "Escape":
-            // only execute if the status is Playing
-            console.log("Escape");
-            
-            break;
-          default:
-            break;
-        }
-      };
+      if(context.current){
+        const ctx = context.current;
+        
+        maze.current = new MazeGameEngine(
+          mazeData,
+          ctx,
+          setStatus
+        );
+  
+        window.onkeydown = (e) => {
+          switch (e.key) {
+            case "w":
+            case "ArrowUp":
+              // only execute if the status is Playing
+              console.log("ArrowUp");
+              maze.current?.moveCurrentPosition("up"); 
+              break;
+            case "s":
+            case "ArrowDown":
+              // only execute if the status is Playing
+              console.log("ArrowDown"); 
+              maze.current?.moveCurrentPosition("down");
+              break;
+            case "d":
+            case "ArrowRight":
+              console.log("ArrowRight");
+              maze.current?.moveCurrentPosition("right");
+              // only execute if the status is Playing
+              break;
+            case "a":
+            case "ArrowLeft":
+              console.log("ArrowLeft");
+              maze.current?.moveCurrentPosition("left");
+              // only execute if the status is Playing
+              break;
+            case "Escape":
+              // only execute if the status is Playing
+              console.log("Escape");
+              
+              break;
+            default:
+              break;
+          }
+        };
+      }
+      
+      maze.current?.renderBoard();
     }
-    
-    maze.current?.renderBoard();
-    
+    else {
+      console.log("maze data not loaded");
+      
+    }
   }, [mazeData]);
 
   return <>
