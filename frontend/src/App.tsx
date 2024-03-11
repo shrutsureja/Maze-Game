@@ -1,13 +1,13 @@
 import './App.css'
 import MazeGame from './Maze/MazeGame'
-import UnderDevelopment from './components/UnderDevelopment'
+// import UnderDevelopment from './components/UnderDevelopment'
 
 
 function App() {
 
   return (
     <>
-      <UnderDevelopment/>
+      {/* <UnderDevelopment/> */}
       <MazeGame/>
     </>
   )
