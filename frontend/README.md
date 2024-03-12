@@ -19,22 +19,30 @@ Happy for more contributors to join.
 
   ```shell
   cd Maze-Game
-  cd backend
-  npm install
-  cd ../frontend
   npm install
   ```
 
-3. Start the backend development server.
+3. Start the development server.
 
   ```shell
-  cd backend
   npm run dev
   ```
 
-4. Start the front development server. 
+# Tasks to Do
 
-  ```shell
-  cd frontend
-  npm run dev
-  ```
+- rendering issues with the react -> to solve this learn more about react and canvas 
+- need to set some limitaions for the values
+- animation of the algorithm generation -> need to find a new way
+- speed of the animation 
+- solution for solving the maze
+- play the maze game with arrow key/ buttons
+- multiplayer game
+- easy medium hard levels
+- impleament some other algorithms (ask for contributions if possible).
+
+
+# env formate
+
+```
+VITE_BASEURL=<base url of backend>
+```
