@@ -14,6 +14,8 @@ export default function MazeGame () {
   const [error , setError ] = useState(false);
   const [timer, setTimer] = useState(0);
 
+  const baseUrl = import.meta.env.DEV ? 'http://localhost:3000' : import.meta.env.VITE_BASEURL;  
+  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   const maze = useRef<MazeGameEngine | null>(null);
@@ -21,7 +23,7 @@ export default function MazeGame () {
   async function fetchMazeData(rows : number, columns : number, animationStatus : boolean, selectedAlgorithm : string) {
     try{
       let body = JSON.stringify({
-        algorithmName: "Hunt and Kill",
+        algorithmName: selectedAlgorithm,
         rows: rows,
         columns: columns,
         animation: animationStatus
@@ -30,7 +32,7 @@ export default function MazeGame () {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:3000/generate',
+        url: baseUrl + '/generate',
         headers: { 
           'Content-Type': 'application/json'
         },
@@ -43,7 +45,7 @@ export default function MazeGame () {
     }
     catch(e){
       setError(true);
-      setStatus('home')
+      setStatus('home');
     }
   } 
 
@@ -70,12 +72,10 @@ export default function MazeGame () {
   <div>
     <h1>Maze Game</h1>
       { status === 'home' && <HomeOptions fetchMazeData={fetchMazeData} status={status} setStatus={setStatus}/>}
-      { status === 'playing' && 
-          <PlayOptions setStatus={setStatus} timer={timer}/> 
-      }
-      { (status === 'playing' || status === 'paused') && <MazeBoard status={status} setStatus={setStatus} mazeData={mazeData} canvasRef={canvasRef} context={context} maze={maze}/>}
-      { status === 'paused' && <OnPause setStatus={setStatus} timer={timer}/>}
-      { status === 'finished' && <OnGameOver setStatus={setStatus} timer={timer}/>}
+      { !error && status === 'playing' && <PlayOptions setStatus={setStatus} timer={timer}/> }
+      { !error && (status === 'playing' || status === 'paused') && <MazeBoard status={status} setStatus={setStatus} mazeData={mazeData} canvasRef={canvasRef} context={context} maze={maze}/>}
+      { !error && status === 'paused' && <OnPause setStatus={setStatus} timer={timer}/>}
+      { !error && status === 'finished' && <OnGameOver setStatus={setStatus} timer={timer}/>}
     </div>
   </>
 }

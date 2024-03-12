@@ -1,8 +1,7 @@
-function Error(props : any) {
-  const { error } = props;
+function Error() {
   return <>
     <div>Error has occured.</div>
-    { error !==null && (<p>{error}</p>)}
+    <button onClick={() => window.location.reload()}>Reload Page</button>
   </>
 }
 

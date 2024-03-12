@@ -39,3 +39,10 @@ Happy for more contributors to join.
 - multiplayer game
 - easy medium hard levels
 - impleament some other algorithms (ask for contributions if possible).
+
+
+# env formate
+
+```
+VITE_BASEURL=<base url of backend>
+```
