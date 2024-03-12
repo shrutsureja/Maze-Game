@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OnPause from "./OnPause";
 import OnGameOver from "./OnGameOver";
 import HomeOptions from "./MazeView/MazeOptions/HomeOptions";
@@ -6,19 +6,25 @@ import axios from 'axios';
 import MazeBoard from "./MazeView/MazeBoard/MazeBoard";
 import PlayOptions from "./MazeView/MazeOptions/PlayOptions";
 import Error from '../components/Error';
+import { MazeGameEngine } from "./MazeView/MazeBoard/MazeGameEngine";
 
 export default function MazeGame () { 
   const [status, setStatus] = useState<'home' | 'animating' | 'playing' | 'paused' | 'finished'>('home');
   const [mazeData, setMazeData] = useState(null);
   const [error , setError ] = useState(false);
+  const [timer, setTimer] = useState(0);
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const context = useRef<CanvasRenderingContext2D | null>(null);
+  const maze = useRef<MazeGameEngine | null>(null);
+
   async function fetchMazeData(rows : number, columns : number, animationStatus : boolean, selectedAlgorithm : string) {
-    alert(rows + " " + columns + " " + animationStatus + " " + selectedAlgorithm);
     try{
       let body = JSON.stringify({
-        "algorithmName": "Hunt and Kill",
-        "rows": rows,
-        "columns": columns,
-        "animation": animationStatus
+        algorithmName: "Hunt and Kill",
+        rows: rows,
+        columns: columns,
+        animation: animationStatus
       });
       
       let config = {
@@ -32,15 +38,28 @@ export default function MazeGame () {
       };
       
       const data = await axios.request(config)
-      console.log(data.data.data.maze); 
+      // need to handle the data in a more better way over here
       setMazeData(data.data.data.maze);
     }
     catch(e){
-      console.log(e);
       setError(true);
       setStatus('home')
     }
   } 
+
+  // For the time used setting
+  useEffect(()=>{
+    const myInterval = setInterval(()=>{
+      if (status === 'playing')
+        setTimer(timer + 1);
+      if (status === 'home')
+        setTimer(0);
+    }, 1000);
+
+    return () => {
+      clearInterval(myInterval);
+    }
+  }, [timer, status])
 
   // if error occurs in fetching the data
   if(error){
@@ -51,14 +70,12 @@ export default function MazeGame () {
   <div>
     <h1>Maze Game</h1>
       { status === 'home' && <HomeOptions fetchMazeData={fetchMazeData} status={status} setStatus={setStatus}/>}
-      { status === 'playing' && (
-        <>
-          <PlayOptions setStatus={setStatus} /> 
-          <MazeBoard status={status} setStatus={setStatus} mazeData = {mazeData}/>
-        </>
-      )}
-      { status === 'paused' && <OnPause setStatus={setStatus}/>}
-      { status === 'finished' && <OnGameOver setStatus={setStatus} />}
+      { status === 'playing' && 
+          <PlayOptions setStatus={setStatus} timer={timer}/> 
+      }
+      { (status === 'playing' || status === 'paused') && <MazeBoard status={status} setStatus={setStatus} mazeData={mazeData} canvasRef={canvasRef} context={context} maze={maze}/>}
+      { status === 'paused' && <OnPause setStatus={setStatus} timer={timer}/>}
+      { status === 'finished' && <OnGameOver setStatus={setStatus} timer={timer}/>}
     </div>
   </>
 }

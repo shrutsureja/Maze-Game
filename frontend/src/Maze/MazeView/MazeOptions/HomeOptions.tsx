@@ -24,7 +24,7 @@ export default function HomeOptions(props : any) {
         <input min={1} max={100} type="number" placeholder="Rows" required onChange={(e) => setRows(Number(e.target.value))}/>
         <input min={1} max={100} type="number" placeholder="Columns" required onChange={(e) => setColumns(Number(e.target.value))}/>
         <label>
-          <input type="checkbox" onChange={(e) => setAnimationStatus(Boolean(e.target.checked))}/>
+          <input type="checkbox" disabled onChange={(e) => setAnimationStatus(Boolean(e.target.checked))}/>
           Animation
         </label>
         <select value={selectedAlgorithm ? selectedAlgorithm.id : ""} required onChange={(e) => setSelectedAlgorithm(algorithmsUsed.find(algo => algo.id === parseInt(e.target.value)) || algorithmsUsed[0])}>

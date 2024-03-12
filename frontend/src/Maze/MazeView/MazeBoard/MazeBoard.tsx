@@ -4,7 +4,6 @@ import { MazeGameEngine } from './MazeGameEngine'
 export default function MazeBoard (props : any) {
   
   const { mazeData, setStatus, status} = props;
-  console.log(mazeData);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
@@ -15,7 +14,6 @@ export default function MazeBoard (props : any) {
       console.log("canvasRef is not used.");
       return;
     }
-
     if(mazeData){
       canvasRef.current.height = mazeData.length * 20;
       canvasRef.current.width = mazeData[0].length * 20;
@@ -23,13 +21,12 @@ export default function MazeBoard (props : any) {
       
       if(context.current){
         const ctx = context.current;
-        
         maze.current = new MazeGameEngine(
           mazeData,
           ctx,
           setStatus
         );
-  
+        
         window.onkeydown = (e) => {
           switch (e.key) {
             case "w":
@@ -76,7 +73,7 @@ export default function MazeBoard (props : any) {
   }, [mazeData]);
 
   return <>
-    <div>
+    <div style={{ display: status === "paused" ? "none" : "block" }}>
       <canvas ref={canvasRef} width={500} height={500}></canvas>
     </div>
   </>

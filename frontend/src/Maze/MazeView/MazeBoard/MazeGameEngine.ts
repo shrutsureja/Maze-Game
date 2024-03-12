@@ -3,7 +3,7 @@ import { Cell } from "./Cell";
 export class MazeGameEngine {
   private cells: Cell[][]; 
   private context: CanvasRenderingContext2D;
-  private setStatus : React.SetStateAction<'home' | 'animating' | 'playing' | 'paused' | 'finished'>;
+  private setStatus : React.Dispatch<React.SetStateAction<'home' | 'animating' | 'playing' | 'paused' | 'finished'>>;
   private nRows : number;
   private nColumns : number;
   private myPath : Cell[] = [];
@@ -15,9 +15,8 @@ export class MazeGameEngine {
   private cellBackground = '#ccc'
   private myPathThickness = 10;
 
-  constructor(cellsData:Cell[][], context : CanvasRenderingContext2D, setStatus : React.SetStateAction<'home' | 'animating' | 'playing' | 'paused' | 'finished'>) {
-      if(cellsData){
-
+  constructor(cellsData:Cell[][], context : CanvasRenderingContext2D, setStatus : React.Dispatch<React.SetStateAction<'home' | 'animating' | 'playing' | 'paused' | 'finished'>>) {
+    if(cellsData){
         this.cells = cellsData.map(row => row.map(cellData => new Cell(cellData.row, cellData.col, cellData.northEdge, cellData.southEdge, cellData.eastEdge, cellData.westEdge)));
         this.context = context;
         this.setStatus = setStatus;
@@ -44,7 +43,7 @@ export class MazeGameEngine {
       this.generateBoard();
     }
     else {
-      console.log("There are now Cells here");
+      console.log("There are NO Cells here");
     }
   }
 
@@ -150,7 +149,6 @@ export class MazeGameEngine {
   // Event handler or the path tracker
   public moveCurrentPosition(movement : string){
     let nextCell: Cell | undefined;
-    console.log(movement + " : movement");
     
     if(this.isGameOver(this.currentCell)){
       return;
@@ -176,14 +174,6 @@ export class MazeGameEngine {
     // now we will verify for the borders of the cell
     // for that we need to check that is this nextCell connected to the currentCell
     // if yes then move else return
-    // if(nextCell) {
-    //   const x = nextCell.isConnectedTo(this.currentCell);
-    //   console.log(x);      
-    // }
-    // else {
-    //   console.log("nextCell is undefined");
-      
-    // }
     if (nextCell && nextCell.isConnectedTo(this.currentCell)){
       // need to check the stepback first 
       if(this.myPath.length > 1 && this.myPath[(this.myPath.length - 1) - 1].equals(nextCell)){
@@ -196,13 +186,11 @@ export class MazeGameEngine {
             //last cell 
             this.setStatus('finished');
             this.drawPath(this.myPath);
-            // alert("finished");
+            alert("finished");
           }
       }
       this.drawPath(this.myPath);
       this.currentCell = nextCell;
-    } else {
-      console.log("nextCell is undefined.");
     }
 
   }
@@ -213,7 +201,7 @@ export class MazeGameEngine {
     this.context.beginPath();
     this.context.moveTo(0, this.cellSize / 2);
 
-    this.myPath.forEach(x =>
+    path.forEach(x =>
       this.context.lineTo(
         (x.col + 0.5) * this.cellSize,
         (x.row + 0.5) * this.cellSize
