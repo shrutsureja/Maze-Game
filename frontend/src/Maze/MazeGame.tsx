@@ -32,7 +32,7 @@ export default function MazeGame () {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: baseUrl + '/api/generate',
+        url: baseUrl + 'api/generate',
         headers: { 
           'Content-Type': 'application/json'
         },
