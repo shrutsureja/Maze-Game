@@ -15,6 +15,7 @@ export default function MazeGame () {
   const [timer, setTimer] = useState(0);
 
   const baseUrl = import.meta.env.DEV ? 'http://localhost:8787' : import.meta.env.VITE_BASEURL;  
+  console.log(baseUrl);
   
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
@@ -32,7 +33,7 @@ export default function MazeGame () {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: baseUrl + 'api/generate',
+        url: baseUrl + '/api/generate',
         headers: { 
           'Content-Type': 'application/json'
         },
