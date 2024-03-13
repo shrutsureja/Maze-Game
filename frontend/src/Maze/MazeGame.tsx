@@ -8,14 +8,14 @@ import PlayOptions from "./MazeView/MazeOptions/PlayOptions";
 import Error from '../components/Error';
 import { MazeGameEngine } from "./MazeView/MazeBoard/MazeGameEngine";
 
+const baseUrl = import.meta.env.DEV ? 'http://localhost:8787' : import.meta.env.VITE_BASEURL;  
+
 export default function MazeGame () { 
   const [status, setStatus] = useState<'home' | 'animating' | 'playing' | 'paused' | 'finished'>('home');
   const [mazeData, setMazeData] = useState(null);
   const [error , setError ] = useState(false);
   const [timer, setTimer] = useState(0);
 
-  const baseUrl = import.meta.env.DEV ? 'http://localhost:8787' : import.meta.env.VITE_BASEURL;  
-  console.log(baseUrl);
   
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
