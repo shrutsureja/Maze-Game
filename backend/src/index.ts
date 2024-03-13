@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { GenerateMaze } from "./Maze/GenerateMaze";
 import z from "zod";
 import cors from 'cors'
+import { MazeInputValidationFunction } from "./utils";
 // const express =  require('express');
 
 const app = express();
@@ -10,26 +11,16 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-const inputValidation = z.object({
-  rows : z.number().min(1).max(100),
-  columns : z.number().min(1).max(100),
-  animation : z.boolean(),
-  algorithmName : z.string().toLowerCase().trim()
-})
+
 //middleware
 function MazeInputValidation(req : Request, res  :Response, next : NextFunction) {
   if(!req.body) {
     res.status(400);
-    res.json({msg: 'Please enter all the fields'});
+    res.json({message: 'Please enter all the fields'});
   }
-  const validate = inputValidation.safeParse(req.body);
-  if (!validate.success){
-    res.status(400).json(validate.error);
-  }
-  const { algorithmName } = req.body;
-  console.log(algorithmName);
-  if( algorithmName.toLowerCase().split(' ').join('') !== "huntandkill" && algorithmName.toLowerCase().split(' ').join('') !== "recursivebacktracking"){
-    res.status(400).json({success : false , msg : "Algorithm does not match." + algorithmName.toLowerCase().split(' ').join('')})
+  const validate = MazeInputValidationFunction(req.body);
+  if(!validate.success){
+    res.status(400).json(validate);
   }
   next();
 }
