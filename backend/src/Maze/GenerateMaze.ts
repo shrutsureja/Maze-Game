@@ -61,7 +61,7 @@ class GenerateMaze {
     const jsonMaze = this.convertMazeToJSON(maze);
     // combine all in one Maze, Animation, Solution
     const response : any = {
-      maze : jsonMaze,
+      mazeGrid : jsonMaze,
       animationStatus : animation,
     }
     if(animation){
