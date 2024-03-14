@@ -1,79 +1,121 @@
 import { useEffect, useRef } from "react";
 import { MazeGameEngine } from './MazeGameEngine'
+import { mazeGridFromServer, path } from "../../../components/types";
 
 export default function MazeBoard (props : any) {
-  
-  const { mazeData, setStatus, status} = props;
 
+  const { responseData, setStatus, status, animationSpeed} = props;
+  
+  // destructuring data
+  let mazeGrid: mazeGridFromServer[][] | null = null;
+  let animationStatus : boolean = false;
+  let animationPath: path[] | null = null;
+  if(responseData){
+    mazeGrid = responseData.mazeGrid;
+    animationStatus = responseData.animationStatus;
+    animationPath = animationStatus ? responseData.animationPath : null;
+  }
+  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   const maze = useRef<MazeGameEngine | null>(null);
 
+  // this handles the responseData as its gets fetched this gets called
   useEffect(()=>{
     if(canvasRef.current === null){
       console.log("canvasRef is not used.");
       return;
     }
-    if(mazeData){
-      canvasRef.current.height = mazeData.length * 20;
-      canvasRef.current.width = mazeData[0].length * 20;
+    if(mazeGrid){
+      canvasRef.current.height = mazeGrid.length * 20;
+      canvasRef.current.width = mazeGrid[0].length * 20;
       context.current = canvasRef.current.getContext('2d');
       
       if(context.current){
         const ctx = context.current;
-        maze.current = new MazeGameEngine(
-          mazeData,
-          ctx,
-          setStatus
-        );
         
+        // if animation is needed
+        if(status === 'animating' && animationPath!==null && animationStatus){
+          maze.current = new MazeGameEngine(
+            mazeGrid,
+            ctx,
+            setStatus,
+            animationPath
+          );
+        }
+        else {
+          maze.current = new MazeGameEngine(
+            mazeGrid,
+            ctx,
+            setStatus
+          );  
+        }
+        
+        // event listner
         window.onkeydown = (e) => {
           switch (e.key) {
             case "w":
             case "ArrowUp":
-              // only execute if the status is Playing
-              console.log("ArrowUp");
               maze.current?.moveCurrentPosition("up"); 
               break;
             case "s":
             case "ArrowDown":
-              // only execute if the status is Playing
-              console.log("ArrowDown"); 
               maze.current?.moveCurrentPosition("down");
               break;
             case "d":
             case "ArrowRight":
-              console.log("ArrowRight");
               maze.current?.moveCurrentPosition("right");
-              // only execute if the status is Playing
               break;
             case "a":
             case "ArrowLeft":
-              console.log("ArrowLeft");
               maze.current?.moveCurrentPosition("left");
-              // only execute if the status is Playing
-              break;
-            case "Escape":
-              // only execute if the status is Playing
-              console.log("Escape");
-              
               break;
             default:
               break;
           }
         };
+
       }
       
-      maze.current?.renderBoard();
+      // if need to animate then this 
+      if(animationStatus && status === 'animating'){
+        // call the maze animation function
+        maze.current?.animatingBoard();
+      }
+      else {
+        maze.current?.renderBoard();
+      }
+
     }
     else {
       console.log("maze data not loaded");
-      
     }
-  }, [mazeData]);
+
+  }, [responseData]);
+
+  // used when we skip the animation or when the animation is completed
+  useEffect(() => {
+    if(status === 'playing'){
+      maze.current?.renderBoard();
+    }
+  }, [status]);
+
+  // used for the speed of animation
+  useEffect(()=>{
+    let intervalID : any;
+    if(status === 'animating'){
+      intervalID = setInterval(()=>{
+        maze.current?.animatingNextStep();
+      }, animationSpeed);
+    }
+    
+    return () => {
+      clearInterval(intervalID);
+    }
+  }, [status, animationSpeed])
 
   return <>
-    <div style={{ display: status === "paused" ? "none" : "block" }}>
+    <div style={{ display: status === 'gamePaused' ? "none" : "block" }}>
       <canvas ref={canvasRef} width={500} height={500}></canvas>
     </div>
   </>

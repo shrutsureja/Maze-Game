@@ -37,7 +37,7 @@ function MazeInputValidation(req : Request, res  :Response, next : NextFunction)
  *  generatedMazePath: {array of {row: number, column: number}}
  * }
  */
-app.post('/generate', MazeInputValidation, (req : Request, res : Response)=> {
+app.post('/api/generate', MazeInputValidation, (req : Request, res : Response)=> {
   const {algorithmName, rows, columns, animation} = req.body;
   try{
     const MazeObj = new GenerateMaze(rows, columns);
