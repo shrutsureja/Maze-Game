@@ -100,8 +100,13 @@ export default function MazeBoard(props: any) {
 
 	return (
 		<>
-			<div style={{ display: status === 'gamePaused' ? 'none' : 'block' }}>
-				<canvas ref={canvasRef} width={500} height={500}></canvas>
+			<div
+				className="mazeboard"
+				style={{ display: status === 'gamePaused' ? 'none' : 'block' }}
+			>
+				<div className="canvasclass">
+					<canvas ref={canvasRef} width={500} height={500}></canvas>
+				</div>
 			</div>
 		</>
 	);

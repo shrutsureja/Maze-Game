@@ -24,49 +24,59 @@ export default function HomeOptions(props: any) {
 	}
 
 	return (
-		<div>
+		<div className="homeoption">
 			<form onSubmit={handleFetchMazeData}>
-				<button type="submit">Start</button>
-				<input
-					min={1}
-					max={100}
-					type="number"
-					placeholder="Rows"
-					required
-					onChange={(e) => setRows(Number(e.target.value))}
-				/>
-				<input
-					min={1}
-					max={100}
-					type="number"
-					placeholder="Columns"
-					required
-					onChange={(e) => setColumns(Number(e.target.value))}
-				/>
-				<label>
+				<div className="playingdiv">
+					<button className="submitbutton" type="submit">
+						Start
+					</button>
 					<input
-						type="checkbox"
-						onChange={(e) => setAnimationStatus(Boolean(e.target.checked))}
+						className="rowbutton"
+						min={1}
+						max={100}
+						type="number"
+						placeholder="Rows"
+						required
+						onChange={(e) => setRows(Number(e.target.value))}
 					/>
-					Animation
-				</label>
-				<select
-					disabled
-					value={selectedAlgorithm ? selectedAlgorithm.id : ''}
-					required
-					onChange={(e) =>
-						setSelectedAlgorithm(
-							algorithmsUsed.find((algo) => algo.id === parseInt(e.target.value)) ||
-								algorithmsUsed[0]
-						)
-					}
-				>
-					{algorithmsUsed.map((algo) => (
-						<option value={algo.id} key={algo.id}>
-							{algo.label}
-						</option>
-					))}
-				</select>
+					<input
+						className="columnbutton"
+						min={1}
+						max={100}
+						type="number"
+						placeholder="Columns"
+						required
+						onChange={(e) => setColumns(Number(e.target.value))}
+					/>
+				</div>
+				<div className="checkdiv">
+					<label>
+						<input
+							className="animate"
+							type="checkbox"
+							onChange={(e) => setAnimationStatus(Boolean(e.target.checked))}
+						/>
+						Animation
+					</label>
+					<select
+						disabled
+						value={selectedAlgorithm ? selectedAlgorithm.id : ''}
+						required
+						onChange={(e) =>
+							setSelectedAlgorithm(
+								algorithmsUsed.find(
+									(algo) => algo.id === parseInt(e.target.value)
+								) || algorithmsUsed[0]
+							)
+						}
+					>
+						{algorithmsUsed.map((algo) => (
+							<option value={algo.id} key={algo.id}>
+								{algo.label}
+							</option>
+						))}
+					</select>
+				</div>
 			</form>
 		</div>
 	);

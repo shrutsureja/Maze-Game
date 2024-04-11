@@ -2,10 +2,22 @@ function PlayOptions(props: any) {
 	const { setStatus, timer } = props;
 	return (
 		<>
-			<div>PlayOptions</div>
-			<button onClick={() => setStatus('gamePaused')}>Pause</button>
-			<button onClick={() => setStatus('finished')}>Stop</button>
-			<label>{timer}s</label>
+			<div className="playoption">
+				<div className="pausebutton">
+					<button className="pausebut" onClick={() => setStatus('gamePaused')}>
+						Pause
+					</button>
+				</div>
+				<div className="stopbutton">
+					<button className="stopbut" onClick={() => setStatus('finished')}>
+						Stop
+					</button>
+				</div>
+				<div className="timer">
+					<label>Timer: {timer}s</label>
+				</div>
+			</div>
+			{/* <div>PlayOptions</div> */}
 		</>
 	);
 }

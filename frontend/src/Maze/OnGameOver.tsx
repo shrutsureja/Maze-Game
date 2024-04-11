@@ -2,11 +2,18 @@ const OnGameOver = (props: any) => {
 	const { setStatus, timer } = props;
 	return (
 		<>
-			<div>
+			<div className="overbut">
 				<h1>Game Over</h1>
 			</div>
-			<label> Time used : {timer}s </label>
-			<button onClick={() => setStatus('home')}>new Game </button>
+			<div className="newpagediv">
+				<label className="newgamebut"> Time used : {timer}s </label>
+				<div>
+					<button className="newgamelabel" onClick={() => setStatus('home')}>
+						{' '}
+						new Game{' '}
+					</button>
+				</div>
+			</div>
 		</>
 	);
 };

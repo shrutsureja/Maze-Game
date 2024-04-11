@@ -77,44 +77,46 @@ export default function MazeGame() {
 
 	return (
 		<>
-			<div>
-				<h1>Maze Game</h1>
-				{status === 'home' && (
-					<HomeOptions
-						fetchMazeData={fetchMazeData}
-						status={status}
-						setStatus={setStatus}
-					/>
-				)}
-				{!error && (status === 'animating' || status === 'animationPaused') && (
-					<AnimationOptions
-						animationSpeed={animationSpeed}
-						setAnimationSpeed={setAnimationSpeed}
-						status={status}
-						setStatus={setStatus}
-					/>
-				)}
-				{!error && status === 'playing' && (
-					<PlayOptions setStatus={setStatus} timer={timer} />
-				)}
-				{!error &&
-					(status === 'playing' ||
-						status === 'gamePaused' ||
-						status === 'animating' ||
-						status === 'animationPaused') && (
-						<MazeBoard
+			<div className="full">
+				<div className="fullpage">
+					<h1>Maze Game</h1>
+					{status === 'home' && (
+						<HomeOptions
+							fetchMazeData={fetchMazeData}
 							status={status}
 							setStatus={setStatus}
-							responseData={responseData}
-							animationSpeed={animationSpeed}
 						/>
 					)}
-				{!error && status === 'gamePaused' && (
-					<OnPause setStatus={setStatus} timer={timer} />
-				)}
-				{!error && status === 'finished' && (
-					<OnGameOver setStatus={setStatus} timer={timer} />
-				)}
+					{!error && (status === 'animating' || status === 'animationPaused') && (
+						<AnimationOptions
+							animationSpeed={animationSpeed}
+							setAnimationSpeed={setAnimationSpeed}
+							status={status}
+							setStatus={setStatus}
+						/>
+					)}
+					{!error && status === 'playing' && (
+						<PlayOptions setStatus={setStatus} timer={timer} />
+					)}
+					{!error &&
+						(status === 'playing' ||
+							status === 'gamePaused' ||
+							status === 'animating' ||
+							status === 'animationPaused') && (
+							<MazeBoard
+								status={status}
+								setStatus={setStatus}
+								responseData={responseData}
+								animationSpeed={animationSpeed}
+							/>
+						)}
+					{!error && status === 'gamePaused' && (
+						<OnPause setStatus={setStatus} timer={timer} />
+					)}
+					{!error && status === 'finished' && (
+						<OnGameOver setStatus={setStatus} timer={timer} />
+					)}
+				</div>
 			</div>
 		</>
 	);
