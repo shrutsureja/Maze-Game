@@ -1,11 +1,11 @@
-b{
-  text-decoration: underline;
+b {
+	text-decoration: underline;
 }
 
-.links{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
+.links {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 3rem;
 }

@@ -1,15 +1,14 @@
-import './App.css'
-import MazeGame from './Maze/MazeGame'
-import UnderDevelopment from './components/UnderDevelopment'
+import './App.css';
+import MazeGame from './Maze/MazeGame';
+import UnderDevelopment from './components/UnderDevelopment';
 
 function App() {
-
-  return (
-    <>
-      <UnderDevelopment/>
-      <MazeGame/>
-    </>
-  )
+	return (
+		<>
+			<UnderDevelopment />
+			<MazeGame />
+		</>
+	);
 }
 
-export default App
+export default App;
