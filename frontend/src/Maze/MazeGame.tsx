@@ -56,7 +56,7 @@ export default function MazeGame() {
 	// used for timer and reseting the states when we come to home again
 	useEffect(() => {
 		const myInterval = setInterval(() => {
-			if (status === 'playing') setTimer(timer + 1);
+			if (status === 'playing' && responseData !== null) setTimer(timer + 1);
 			if (status === 'home') {
 				// this conditions are used to reset the states when we come to home again
 				setTimer(0);
@@ -68,7 +68,7 @@ export default function MazeGame() {
 		return () => {
 			clearInterval(myInterval);
 		};
-	}, [timer, status]);
+	}, [timer, status, responseData]);
 
 	// if error occurs in fetching the data
 	if (error) {
