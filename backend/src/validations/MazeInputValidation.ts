@@ -14,9 +14,11 @@ export function MazeInputValidationFunction(body: any) {
 			return { success: false, message: 'Not exact number of parameters.' };
 		}
 		const { algorithmName } = body;
+
 		if (!validate.success) {
 			return { success: false, message: validate.error };
 		}
+
 		if (
 			algorithmName.toLowerCase().split(' ').join('') !== 'huntandkill' &&
 			algorithmName.toLowerCase().split(' ').join('') !== 'recursivebacktracking'
@@ -27,6 +29,7 @@ export function MazeInputValidationFunction(body: any) {
 					'Algorithm does not match. ' + algorithmName.toLowerCase().split(' ').join(''),
 			};
 		}
+
 		return { success: true, message: 'Success' };
 	} catch (error) {
 		return { success: false, message: 'Error in validation.' };

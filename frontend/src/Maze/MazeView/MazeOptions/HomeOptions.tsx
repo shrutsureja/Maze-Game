@@ -51,7 +51,6 @@ export default function HomeOptions(props: any) {
 					Animation
 				</label>
 				<select
-					disabled
 					value={selectedAlgorithm ? selectedAlgorithm.id : ''}
 					required
 					onChange={(e) =>

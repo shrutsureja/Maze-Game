@@ -1,4 +1,5 @@
 import { HuntAndKill } from './Algorithms/HuntAndKill';
+import { RecursiveBacktracking } from './Algorithms/RecursiveBacktracking';
 import { Cell } from './Cell';
 import { Utils, Path } from './Utils';
 
@@ -55,7 +56,16 @@ class GenerateMaze {
 				animationPath = huntAndKillObj.getAnimationPath();
 			}
 		} else if (algorithmName === 'recursivebacktracking') {
-			// alog
+			const recursiveBacktrackingObj = new RecursiveBacktracking(
+				this.rows,
+				this.columns,
+				animation,
+				this.cells
+			);
+			maze = recursiveBacktrackingObj.getGeneratedMaze();
+			if (animation) {
+				animationPath = recursiveBacktrackingObj.getAnimationPath();
+			}
 		}
 		const jsonMaze = this.convertMazeToJSON(maze);
 		// combine all in one Maze, Animation, Solution
