@@ -25,11 +25,11 @@ h1 {
 	justify-content: center;
 	text-transform: uppercase;
 }
-
+/* 
 .fullpage:hover {
 	scale: 1.05;
 	box-shadow: 0px 0px 50px black;
-}
+} */
 
 .homeoption {
 	display: flex;
