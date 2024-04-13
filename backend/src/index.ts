@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { GenerateMaze } from './Maze/GenerateMaze';
 import z from 'zod';
 import cors from 'cors';
-import { MazeInputValidationFunction } from './utils';
+import { MazeInputValidationFunction } from './validations/MazeInputValidation';
 // const express =  require('express');
 
 const app = express();
