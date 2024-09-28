@@ -1,5 +1,4 @@
 # Maze Game
-(Project is underdevelopment it will be completed by the end of March 2024)
 
 A Maze Game web application, you can play individually and against your friends. And also visualize how the maze is generated with Hunt and Kill algorithm and solved with backtracking.
 
